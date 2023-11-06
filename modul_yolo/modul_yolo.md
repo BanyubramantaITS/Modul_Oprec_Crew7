@@ -112,7 +112,7 @@ mengimplementasikan algortima CNN dalam algoritma mereka.
 
 ## Coba YOLO
 
-Berikut adalah contoh implementasi YOLOv5 dan YOLOv8:
+Berikut adalah step-step untuk implementasi YOLOv5 dan YOLOv8:
 
 ### YOLOv5
 
@@ -162,4 +162,19 @@ Berikut adalah contoh implementasi YOLOv5 dan YOLOv8:
     python3 detect.py --weights yolov5s.pt --source 0
     ```
     jika belum install python berarti anda tolol!!!
+
+    setelah di-run maka akan muncul seperti ini
+    ![image](./images/yolov5.jpg)
+
+### YOLOv8
+
+1. pastikan sudah melakuka instalasi pip
+2. install library opencv, supervision, dan ultralytics dengan command berikut
+
+    ``` bash
+    pip install opencv-python
+    pip install supervision
+    pip install ultralytics
+    ```
+3. buat file python dan copy kode berikut
     
