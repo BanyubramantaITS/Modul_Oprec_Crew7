@@ -161,7 +161,6 @@ Berikut adalah step-step untuk implementasi YOLOv5 dan YOLOv8:
     ```bash
     python3 detect.py --weights yolov5s.pt --source 0
     ```
-    jika belum install python berarti anda tolol!!!
 
     setelah di-run maka akan muncul seperti ini
     ![image](./images/yolov5.jpg)
@@ -177,4 +176,108 @@ Berikut adalah step-step untuk implementasi YOLOv5 dan YOLOv8:
     pip install ultralytics
     ```
 3. buat file python dan copy kode berikut
+
+    ``` python
+    import cv2
+    import time
+
+    from ultralytics import YOLO
+    import supervision as sv
+
+    def main():
+
+        # used to record the time when we processed last frame
+        prev_frame_time = 0
     
+        # used to record the time at which we processed current frame
+        new_frame_time = 0
+
+        cap = cv2.VideoCapture(0)
+
+        model = YOLO("yolov8n.pt")
+
+        box_annotator = sv.BoxAnnotator(
+            thickness=2,
+            text_thickness=2,
+            text_scale=1
+        )
+
+
+        while True:
+            ret, frame = cap.read()
+
+            result = model(frame)[0]
+            detections = sv.Detections.from_yolov8(result)
+            labels = [
+                f"{model.model.names[class_id]} {confidence:0.2f}"
+                for _, confidence, class_id, _
+                in detections
+            ]
+            frame = box_annotator.annotate(
+                scene=frame, 
+                detections=detections, 
+                labels=labels
+            )
+
+            print(labels)
+
+            # font which we will be using to display FPS
+            font = cv2.FONT_HERSHEY_SIMPLEX
+
+            # time when we finish processing for this frame
+            new_frame_time = time.time()
+
+            # Calculating the fps
+    
+            # fps will be number of frame processed in given time frame
+            # since their will be most of time error of 0.001 second
+            # we will be subtracting it to get more accurate result
+            fps = 1/(new_frame_time-prev_frame_time)
+            prev_frame_time = new_frame_time
+        
+            # converting the fps into integer
+            fps = int(fps)
+        
+            # converting the fps to string so that we can display it on frame
+            # by using putText function
+            fps = str(fps)
+        
+            # putting the FPS count on the frame
+            cv2.putText(frame, fps, (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA)
+
+            frame_height, frame_width, _ = frame.shape
+            frame = cv2.resize(frame, (int(frame_width*2), int(frame_height*2)))
+
+            cv2.imshow("yolov8", frame)
+
+            if (cv2.waitKey(30) == 27):
+                break
+
+
+    if __name__ == "__main__":
+        main()
+    ```
+4. run kode-nya dengan command 
+    ```bash
+    python3 <nama_file>
+    ```
+
+## Membuat custom dataset dengan roboflow
+
+dua contoh diatas menggunakan dataset yang telah disediakan oleh yolo. Untuk mendeteksi objek-objek yang kita inginkan, kita perlu membuat dataset sendiri. 
+
+1. ambil sample berupa video atau gambar dari objek yang inging kita deteksi
+2. buka web roboflow dan upload video atau gambar tersebut 
+3. Simak video berikut untuk step selanjutnya
+    - https://www.youtube.com/watch?v=wuZtUMEiKWY&t=5s
+    - https://www.youtube.com/watch?v=x0ThXHbtqCQ
+4. setelah data di-trainning download file dengan format .pt hasil trainning dataset
+5. untuk yolov8, ganti path dan nama pada kode yolo berikut ke path dimana file .pt kalian berada
+    ```python
+    model = YOLO("<path__file.pt>")
+    ```
+    lalu run kodenya
+6. untuk yolov5, masukkan file .pt ke folder yolov5 dan run dengan dengan command berikut
+    ``````bash
+    python3 detect.py --weights <path_file.pt> --source 0
+    ``````
