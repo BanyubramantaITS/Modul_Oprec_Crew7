@@ -58,7 +58,7 @@ Sign up akun MATLAB di https://www.mathworks.com/ menggunakan akun email ITS
 
 Download installer MATLAB R2023b untuk Linux di https://www.mathworks.com/downloads/
 
-![download-installer-linux-matlab](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/1-4.pngg)
+![download-installer-linux-matlab](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/1-4.png)
 
 Extract Zip File dengan masuk ke direktori download & install unzip
 
