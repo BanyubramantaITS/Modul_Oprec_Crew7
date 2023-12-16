@@ -23,11 +23,11 @@
 
 Sign up akun MATLAB di https://www.mathworks.com/ menggunakan akun email ITS
 
-![signup-account-matlab](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/Modul MATLAB/images/1-1.png)
+![signup-account-matlab]('https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/Modul MATLAB/images/1-1.png')
 
 Download installer MATLAB R2023b untuk Windows di https://www.mathworks.com/downloads/
 
-![download-installer-matlab](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/Modul MATLAB/images/1-2.png)
+![download-installer-matlab]('https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/Modul MATLAB/images/1-2.png')
 
 Sign in & Install MATLAB R2023b sesuai lokasi yang diinginkan
 
