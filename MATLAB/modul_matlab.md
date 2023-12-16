@@ -17,7 +17,7 @@
     + [Matlab Function](matlab-function)
     + [Pathplanning di Simulink](#pathplanning-di-simulink)
 
-# Instlasi MATLAB R2023b
+# Instalasi MATLAB R2023b
 
 ## Instalasi MATLAB R2023b Windows 10/11
 
