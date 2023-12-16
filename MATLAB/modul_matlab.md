@@ -23,11 +23,11 @@
 
 Sign up akun MATLAB di https://www.mathworks.com/ menggunakan akun email ITS
 
-![signup-account-matlab]('https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/Modul MATLAB/images/1-1.png')
+![signup-account-matlab](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/MATLAB/images/1-1.png)
 
 Download installer MATLAB R2023b untuk Windows di https://www.mathworks.com/downloads/
 
-![download-installer-matlab]('https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/Modul MATLAB/images/1-2.png')
+![download-installer-matlab](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/MATLAB/images/1-2.png)
 
 Sign in & Install MATLAB R2023b sesuai lokasi yang diinginkan
 
@@ -46,7 +46,7 @@ Centang Toolbox dengan pilihan berikut :
 
 Jika ingin menambah toolbox diluar itu opsional
 
-![toolbox-check-matlab](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/Modul MATLAB/images/1-3.jpg)
+![toolbox-check-matlab](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/MATLAB/images/1-3.jpg)
 
 MATLAB R2023b sudah dapat dijalankan
 
@@ -54,11 +54,11 @@ MATLAB R2023b sudah dapat dijalankan
 
 Sign up akun MATLAB di https://www.mathworks.com/ menggunakan akun email ITS
 
-![signup-account-matlab](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/Modul MATLAB/images/1-1.png)
+![signup-account-matlab](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/MATLAB/images/1-1.png)
 
 Download installer MATLAB R2023b untuk Linux di https://www.mathworks.com/downloads/
 
-![download-installer-linux-matlab](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/Modul MATLAB/images/1-4.png)
+![download-installer-linux-matlab](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/MATLAB/images/1-4.png)
 
 Extract Zip File dengan masuk ke direktori download & install unzip
 
@@ -92,7 +92,7 @@ Centang Toolbox dengan pilihan berikut :
 
 Jika ingin menambah toolbox diluar itu opsional
 
-![toolbox-check-matlab](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/Modul MATLAB/images/1-3.jpg)
+![toolbox-check-matlab](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/MATLAB/images/1-3.jpg)
 
 MATLAB R2023b sudah dapat dijalankan
 
