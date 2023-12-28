@@ -94,7 +94,15 @@ Jika ingin menambah toolbox diluar itu opsional
 
 ![toolbox-check-matlab](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/1-3.jpg)
 
-MATLAB R2023b sudah dapat dijalankan
+Create MATLAB Symbolic Link, dengan
+```
+sudo ln -s /usr/local/MATLAB/R2020b/bin/matlab /usr/local/bin/matlab
+```
+
+MATLAB R2023b sudah dapat dijalankan dengan cara launch dari terminal
+```
+matlab
+```
 
 # Script
 
