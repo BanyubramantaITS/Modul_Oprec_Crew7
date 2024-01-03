@@ -123,7 +123,6 @@ Berikut adalah step-step untuk implementasi YOLOv5 dan YOLOv8:
 
     ``` bash
     git --version
-        
     ```
     jika sudah terinstall akan muncul versi git yang terinstall
     ``` bash
