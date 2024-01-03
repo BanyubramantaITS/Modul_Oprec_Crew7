@@ -1,4 +1,4 @@
-#Pengenalan ROS
+# Pengenalan ROS
 Dalam era teknologi yang semakin maju, robot interaktif menjadi salah satu bidang yang semakin diminati dalam dunia pendidikan. Dalam rangka menghadapi perkembangan ini, Robot Operating System (ROS) dan Gazebo muncul sebagai media pembelajaran yang inovatif dan efektif dalam mengembangkan keterampilan robotika. Artikel ini akan membahas tentang penggunaan ROS dan Gazebo sebagai media pembelajaran robot interaktif.
 
 - Pengenalan Robot Operating System (ROS): Robot Operating System (ROS) adalah kerangka kerja perangkat lunak yang dirancang khusus untuk mengembangkan aplikasi robotika. ROS menyediakan berbagai fungsi dan alat yang memungkinkan pengembang untuk mengendalikan robot dengan mudah. Dengan menggunakan ROS, pengguna dapat menghubungkan, mengontrol, dan mengintegrasikan komponen robot secara efisien.
@@ -234,4 +234,139 @@ Saat menjalankan rqt untuk pertama kali mungkin windownya akan blank. tinggal se
 
 ![image](./images/rqt.png)
 
-Kalian bisa lihat lihat service disana
+Kalian bisa lihat lihat service disana.
+
+Jadi kegunaan rqt ini adalah untuk mengecheck apakah service sudah berjalan atau tidak.
+
+## Memahami nodes
+Setiap node dalam ROS bertanggung jawab atas satu tujuan modular, misalnya mengendalikan motor roda atau memublikasikan data sensor dari pengukur jarak laser. Setiap node dapat mengirim dan menerima data dari node lain melalui topics, services, actions, atau parameters.
+
+![image](./images/Nodes-TopicandService.gif)
+
+Sistem robotik lengkap terdiri dari banyak node yang bekerja bersama-sama. Dalam ROS 2, satu "executable file" (program C++, program Python, dll.) dapat berisi satu atau lebih node.
+
+Sekarang coba jalankan turtlesim_node dan turtle_teleop_key
+
+Perlu diingat command ros2 run adalah cara kita menjalankan suatu executable file dalam ros2 humble ini.
+```
+ros2 run <package_name> <executable_name>
+```
+
+Jadi untuk menjalankan turtlesim_node dan turtle_teleop_key kita menggunakan command dibawah
+```
+ros2 run turtlesim turtlesim_node
+```
+buka terminal baru
+```
+ros2 run turtlesim turtle_teleop_key
+```
+
+Untuk melihat node yang sudah kita jalankan kita akan membuka terminal baru dan gunakan command ini
+```
+ros2 node list
+```
+
+Jika pada terminal sudah menunjukan
+```
+/turtlesim
+/teleop_turtle
+```
+maka node-node yang kita run sudah aktif.
+
+Jika ingin melihat lebih dalam ada apa saja dalam node yang ingin kita lihat. Kita dapat menggunakan command
+
+```
+ros2 node info <node_name>
+```
+
+misal kita ingin melihat info dari "/turtlesim". Maka command yang kita gunakan adalah
+
+```
+ros2 node info /turtlesim
+```
+
+maka akan keluar list subscriber, publisher, service server, service client, action server, dan action client.
+
+Lalu coba lihat info dari "/teleop_turtle" dan bandingkan perbedaan/hubungannya dengan "/turtlesim".
+
+## Memahami topics
+
+ROS 2 memecah sistem yang kompleks menjadi banyak node modular. Topics adalah elemen penting dari grafik ROS yang bertindak sebagai bus bagi node untuk bertukar pesan.
+
+![image](./images/Topic-SinglePublisherandSingleSubscriber.gif)
+
+Sebuah node bisa mengpublish data ke berbagai topics dan berbagai subscriber
+
+![image](./images/Topic-MultiplePublisherandMultipleSubscriber.gif)
+
+Topik adalah salah satu cara utama untuk memindahkan data antar node, dan dengan demikian, antar berbagai bagian dalam sistem. Bayangkanlah topik sebagai jalan tol komunikasi atau aliran data yang menghubungkan node-node.
+
+Sekarang coba jalankan turtlesim seperti pada tutorial sebelumnya.
+```
+ros2 run turtlesim turtlesim_node
+```
+buka terminal baru
+```
+ros2 run turtlesim turtle_teleop_key
+```
+
+Lalu buka rqt_graph dengan command
+```
+rqt_graph
+```
+Kemudian akan muncul window seperti ini
+![image](./images/rqt_graph.png)
+
+Anda akan melihat node dan topik di atas, serta dua aksi di sekitar pinggiran grafik (mari kita abaikan dulu untuk saat ini). Jika Anda mengarahkan kursor mouse ke topik di tengah, Anda akan melihat sorotan warna seperti pada gambar di atas.
+
+Grafik ini menggambarkan bagaimana node /turtlesim dan node /teleop_turtle berkomunikasi satu sama lain melalui topik. Node /teleop_turtle memublikasikan data (penekanan tombol yang Anda masukkan untuk menggerakkan kura-kura) ke topik /turtle1/cmd_vel, dan node /turtlesim berlangganan ke topik tersebut untuk menerima data.
+
+Fitur sorotan pada rqt_graph sangat membantu ketika memeriksa sistem yang lebih kompleks dengan banyak node dan topik yang terhubung dalam berbagai cara.
+
+rqt_graph adalah alat introspeksi grafis. Sekarang kita akan melihat beberapa alat baris perintah untuk menginspeksi topik.
+
+Baikk sekarang kita akan melihat list dari topic topic yang kita jalankan. Tolong diingat command yang kita gunakan untuk menampilkan list topic adalah
+
+```
+ros2 topic list
+```
+jalankan command tersebut pada terminal baru. Jangan close turtle sim!!!
+
+Setelah menjalankan ros2 topic list maka pada terminal anda akan keluar seperti ini
+```
+/parameter_events
+/rosout
+/turtle1/cmd_vel
+/turtle1/color_sensor
+/turtle1/pose
+```
+
+Jika Anda bertanya-tanya di mana semua topik ini berada di rqt_graph, Anda dapat menghapus centang pada semua kotak di bawah bagian "Hide":
+
+![image](./images/unhide.png)
+
+Kita lanjut ke topic echo. Topic echo adalah command yang bisa menunjukkan isi dari sebuah topic. Template command topic echo adalah seperti ini
+```
+ros2 topic echo <topic_name>
+```
+
+Coba jalankan command dibawah ini pada terminal baru
+```
+ros2 topic echo /turtle1/cmd_vel
+```
+
+Maka pada terminal anda akan muncul seperti ini.
+```
+linear:
+  x: 2.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+  ---
+```
+
+Coba gerakkan turtle sim dan lihat apa yang terjadi...
+
