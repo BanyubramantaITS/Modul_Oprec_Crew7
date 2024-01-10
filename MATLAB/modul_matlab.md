@@ -110,16 +110,16 @@ matlab
 
 Beberapa syntax dasar yang digunakan di MATLAB diantaranya
 
-|     Syntax      |                         Syntax                          |
-|-----------------|:--------------------------------------------------------|
-| `clc`          | Untuk membersihkan Command Window dan posisi kursor      |
-| `load`         | Untuk membaca data dari file.mat dan memasukkannya ke dalam workspace matlab      |
-| `case`          | `enum`      |
-| `char`          | `extern`    |
-| `continue`      | `for`       |
-| `do`            | `if`        |
-| `default`       | `goto`      |
-| `const`         | `float`     |
+|     Syntax      |                                      Syntax                                      |
+|-----------------|:---------------------------------------------------------------------------------|
+| `clc`           | Untuk membersihkan Command Window dan posisi kursor                              |
+| `load`          | Untuk membaca data dari file.mat dan memasukkannya ke dalam workspace matlab     |
+| `sound`         | Untuk memutar audio yang ada dalam vektor atau matriks                           |
+| `imshow`        | Untuk menampilkan gambar atau citra yang telah dimuat ke dalam workspace MATLAB  |
+| `title`         | Untuk menampilkan gambar atau citra yang telah dimuat ke dalam workspace MATLAB  |
+| `plot`          | Untuk membuat grafik atau plot data                                              |
+| `subplot`       | Untuk membuat tata letak subplot dalam satu gambar                               |
+
 ## Plot
 ## Omnidirectional
 ## Binary Occupancy Map
