@@ -1,8 +1,8 @@
 ## Daftar Isi
 
 - [Instalasi MATLAB R2023b](#instalasi-matlab-r2023)
-    + [Instalasi MATLAB R2023b Windows 10/11](#instalasi-matlab-windows)
-    + [Instalasi MATLAB R2023b Linux Ubuntu 22.04 LTS](#instlasi-matlab-linux)
+    + [Instalasi MATLAB R2023b Windows 10/11](#instalasi-matlab-r2023b-windows-10/11)
+    + [Instalasi MATLAB R2023b Linux Ubuntu 22.04 LTS](#instalasi-matlab-r2023b-linux-ubuntu-22.04-lts)
 
 - [Script](#script)
     + [Syntax Dasar](#syntax-dasar)
