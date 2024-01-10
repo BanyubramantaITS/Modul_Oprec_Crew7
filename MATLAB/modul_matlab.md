@@ -1,10 +1,10 @@
 ## Daftar Isi
 
-- [Instalasi MATLAB R2023b](#instalasi-matlab)
+- [Instalasi MATLAB R2023b](#instalasi-matlab-r2023)
     + [Instalasi MATLAB R2023b Windows 10/11](#instalasi-matlab-windows)
     + [Instalasi MATLAB R2023b Linux Ubuntu 22.04 LTS](#instlasi-matlab-linux)
 
-- [Script](#pengenalan-script)
+- [Script](#script)
     + [Syntax Dasar](#syntax-dasar)
     + [Plot](#plot)
     + [Binary Occupancy Map](#binary-occupancy-map)
