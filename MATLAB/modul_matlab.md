@@ -139,6 +139,36 @@ Maka hasilnya
 ![hasil-plot](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/2-plot.png)
 
 ## Omnidirectional
+
+Gerak omnidireksional adalah Gerakan yang mampu ke segala arah. Secara umum memiliki 3-DoF serta dapat dikontrol dengan PID. Secara penggunaan juga lebih efisien, padat menggunakan 3 atau 4 penggerak saja untuk mencapainya
+
+Pada desain AUV/ROV dengan konfigurasi thruster 45 derajat maka θ = π/4. Jika 60 derajat maka perlu penyesuaian sudut
+
+![konfigurasi-4-thruster](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/2-2-1.jpg)
+
+Terdapat 2 cara untuk mencari perhitungan Omnidirectional
+
+### 1. Inverse-Pseudo Jacobian Matrix
+
+Untuk mencari Vx, Vy, dan ω apabila diketahui V1, V2, V3, V4 dapat dengan rumus berikut
+
+![persamaan-perhitungan-vx-vy-w](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/2-2-2.png)
+
+atau dapat dengan metode augmentasi matrix
+
+![matrix-perhitungan-vx-vy-w](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/2-2-3.png)
+
+Sebaliknya, Untuk mencari V1, V2, V3, V4 apabila diketahui Vx, Vy, dan ω dapat dengan rumus berikut
+
+![matrix-inverse-pseudo](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/2-2-4.png)
+
+Ada satu cara lagi yang dapat digunakan untuk mengkalkulasi Gerakan omni secara mudah tanpa menggunakan pseudo-inverse
+
+Dimana perhitungan hanya mengandalkan perkalian matriks sederhana sehingga secara program lebih sederhana
+
+### 2. Simple Kinematic
+
+
 ## Binary Occupancy Map
 ## Pathplanning
 ## Pathtracking
