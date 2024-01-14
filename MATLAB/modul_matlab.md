@@ -163,6 +163,43 @@ Sebaliknya, Untuk mencari V1, V2, V3, V4 apabila diketahui Vx, Vy, dan ω dapat 
 
 ![matrix-inverse-pseudo](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/2-2-4.png)
 
+Dengan menggunakan matriks tersebut, maka untuk menghitung V1, V2, V3, V4 menggunakan Inverse-Pseudo Jacobian Matrix yaitu
+
+```
+syms x vx vy w v1 v2 v3 v4 l;
+l = 0.25;
+
+% parameter gerakan
+vx = 10;
+vy = 10;
+w = 2;
+x = pi/4;
+
+%kecepatan thruster
+Vwheel =   [v1;
+            v2;
+            v3;
+            v4];
+%kecepatan robot yang diinginkan
+Vdesired = [vx;
+            vy;
+            -w*l];
+
+%Pseudo-Inverse Jacobian Matrix
+J = [sin(x), -cos(x), -sin(x), cos(x);
+    -cos(x), -sin(x), cos(x), cos(x);
+    1,      1,      1,      1];
+Jinv = pinv(J);
+
+%hasil perkalian matrix
+K = Jinv*Vdesired;
+disp("Pseudo-inverse dari J");
+disp(Jinv);
+
+disp("Hasil kecepatan tiap penggerak");
+disp(K);
+```
+
 ### 2. Simple Kinematic
 
 Ada satu cara lagi yang dapat digunakan untuk mengkalkulasi Gerakan omni secara mudah tanpa menggunakan pseudo-inverse
@@ -174,6 +211,36 @@ Dimana perhitungan hanya mengandalkan perkalian matriks sederhana sehingga secar
 Jika konfigurasi thruster 45 derajat atau π/4, maka
 
 ![simple-kinematic-matrix-45-degree](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/2-2-6.png)
+
+Dengan menggunakan matriks tersebut, maka untuk menghitung V1, V2, V3, V4 menggunakan metode kedua yaitu
+
+```
+syms R x vx vy w v1 v2 v3 v4 l;
+
+R = 0.25;
+
+vx = -10;
+vy = 20;
+vt = 3;
+
+Vwheel =   [v1;
+            v2;
+            v3;
+            v4];
+
+Vdesired = [vx;
+            vy;
+            vt];
+
+J = [sin(pi/4), cos(pi/4), R;
+    sin(pi*(3/4)), cos(pi*(3/4)), R;
+    sin(pi*(5/4)), cos(pi*(5/4)), R;
+    sin(pi*(7/4)), cos(pi*(7/4)), R];
+
+K = J*Vdesired;
+
+disp(K);
+```
 
 ## Binary Occupancy Map
 
