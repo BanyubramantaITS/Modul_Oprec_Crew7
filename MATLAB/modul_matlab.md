@@ -121,6 +121,23 @@ Beberapa syntax dasar yang digunakan di MATLAB diantaranya
 | `subplot`       | Untuk membuat tata letak subplot dalam satu gambar                               |
 
 ## Plot
+
+Plot digunakan untuk membuat grafik atau data dari suatu sinyal atau data yang berubah secara waktu kontinu maupun diskrit
+
+Contoh
+
+```
+clc
+load train.mat % Membuka file suara bawaan Matlab
+whos           % Menampilkan informasi sinyal suara
+sound(y,Fs)    % Memainkan file suara
+plot(y)        % Menampilkan kurva sinyal suara
+```
+
+Maka hasilnya
+
+![hasil-plot](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/2-plot.jpg)
+
 ## Omnidirectional
 ## Binary Occupancy Map
 ## Pathplanning
