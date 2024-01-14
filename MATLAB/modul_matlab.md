@@ -7,6 +7,7 @@
 - [Script](#script)
     + [Syntax Dasar](#syntax-dasar)
     + [Plot](#plot)
+    + [Omnidirectional](#omnidirectional)
     + [Binary Occupancy Map](#binary-occupancy-map)
     + [Pathplanning](#pathplanning)
     + [Pathtracking](#pathtracking)
@@ -175,6 +176,37 @@ Jika konfigurasi thruster 45 derajat atau π/4, maka
 ![simple-kinematic-matrix-45-degree](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/2-2-6.png)
 
 ## Binary Occupancy Map
+
+### Definisi
+
+BinaryOccupancyMap membuat objek occupancy map 2-D, yang dapat kita gunakan untuk merepresentasikan dan memvisualisasikan ruang kerja robot, termasuk rintangan. Integrasi data sensor dan estimasi posisi menciptakan representasi spasial dari perkiraan lokasi rintangan.
+
+Occupancy grid digunakan dalam algoritme robotika seperti perencanaan jalur yang juga digunakan dalam aplikasi pemetaan, seperti untuk menemukan jalur bebas obstacle, melakukan penghindaran tabrakan, dan menghitung mapping lokalisasi. kita dapat memodifikasi Occupancy grid agar sesuai dengan aplikasi spesifik kita.
+
+Setiap sel dalam occupancy grid memiliki nilai yang merepresentasikan status okupansi sel tersebut. Lokasi yang ditempati direpresentasikan sebagai TRUE (1) dan lokasi kosong direpresentasikan sebagai FALSE (0).
+
+Objek terus mentracking tiga kerangka referensi: map, lokalisasi, dan, grid. Asal frame map didefinisikan oleh GridLocationInWorld, yang mendefinisikan mulai dari sudut kiri bawah occupancy map relatif terhadap frame map. Properti LocalOriginInWorld menentukan lokasi asal frame lokal relatif terhadap frame map. Lokasi grid pertama dengan indeks (1,1) dimulai di sudut kiri atas grid
+
+### Syntax
+
+map = binaryOccupancyMap
+
+map = binaryOccupancyMap(width,height)
+
+map = binaryOccupancyMap(width,height,resolution)
+
+map = binaryOccupancyMap(rows,cols,resolution,"grid")
+
+map = binaryOccupancyMap(p)
+
+map = binaryOccupancyMap(p,resolution)
+
+map = binaryOccupancyMap(sourcemap)
+
+map = binaryOccupancyMap(sourcemap,resolution)
+
+Seluruh dokumentasi dapat dilihat di : https://www.mathworks.com/help/nav/ref/binaryoccupancymap.html
+
 ## Pathplanning
 ## Pathtracking
 
