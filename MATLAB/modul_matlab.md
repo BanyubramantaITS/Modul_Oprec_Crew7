@@ -136,7 +136,7 @@ plot(y)        % Menampilkan kurva sinyal suara
 
 Maka hasilnya
 
-![hasil-plot](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/2-plot.jpg)
+![hasil-plot](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/2-plot.png)
 
 ## Omnidirectional
 ## Binary Occupancy Map
