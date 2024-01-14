@@ -162,12 +162,17 @@ Sebaliknya, Untuk mencari V1, V2, V3, V4 apabila diketahui Vx, Vy, dan ω dapat 
 
 ![matrix-inverse-pseudo](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/2-2-4.png)
 
+### 2. Simple Kinematic
+
 Ada satu cara lagi yang dapat digunakan untuk mengkalkulasi Gerakan omni secara mudah tanpa menggunakan pseudo-inverse
 
 Dimana perhitungan hanya mengandalkan perkalian matriks sederhana sehingga secara program lebih sederhana
 
-### 2. Simple Kinematic
+![simple-kinematic-matrix-equation](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/2-2-5.png)
 
+Jika konfigurasi thruster 45 derajat atau π/4, maka
+
+![simple-kinematic-matrix-45-degree](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/2-2-6.png)
 
 ## Binary Occupancy Map
 ## Pathplanning
