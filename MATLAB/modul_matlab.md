@@ -205,6 +205,8 @@ map = binaryOccupancyMap(sourcemap)
 
 map = binaryOccupancyMap(sourcemap,resolution)
 
+### Dokumentasi
+
 Seluruh dokumentasi dapat dilihat di : https://www.mathworks.com/help/nav/ref/binaryoccupancymap.html
 
 ## Pathplanning
