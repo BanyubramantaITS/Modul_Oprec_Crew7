@@ -254,6 +254,10 @@ Setiap sel dalam occupancy grid memiliki nilai yang merepresentasikan status oku
 
 Objek terus mentracking tiga kerangka referensi: map, lokalisasi, dan, grid. Asal frame map didefinisikan oleh GridLocationInWorld, yang mendefinisikan mulai dari sudut kiri bawah occupancy map relatif terhadap frame map. Properti LocalOriginInWorld menentukan lokasi asal frame lokal relatif terhadap frame map. Lokasi grid pertama dengan indeks (1,1) dimulai di sudut kiri atas grid
 
+Contoh Binary Occupancy Map
+
+![occupancy-map](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/SAUVC_Map.png)
+
 ### Syntax
 
 map = binaryOccupancyMap
@@ -277,6 +281,211 @@ map = binaryOccupancyMap(sourcemap,resolution)
 Seluruh dokumentasi dapat dilihat di : https://www.mathworks.com/help/nav/ref/binaryoccupancymap.html
 
 ## Pathplanning
+
+### Simulasi Path Planning dengan Mobile Robot
+
+Buat skenario untuk mensimulasikan robot bergerak yang menavigasi ruangan. Contoh ini menunjukkan cara membuat skenario, mendapatkan binary occupancy map dari skenario, dan merencanakan jalur yang harus diikuti oleh robot bergerak menggunakan algoritme perencanaan jalur mobileRobotPRM.
+
+```
+openExample('robotics/PerformPathPlanningSimulationWithMobileRobotExample')
+```
+
+#### Membuat Scenario dengan Ground Plane dan Static Meshes
+
+objek robotScenario terdiri dari sekumpulan obstacle statis dan objek bergerak yang disebut platform. Gunakan objek robotPlatform untuk memodelkan robot bergerak di dalam scenario. Contoh ini membuat skenario yang terdiri dari bidang tanah dan jaring kotak untuk membuat ruangan.
+
+```
+scenario = robotScenario(UpdateRate=5);
+```
+
+tambahkan mesh datar sebagai alas atau ground dari scenario
+
+```
+floorColor = [0.5882 0.2941 0];
+addMesh(scenario,"Plane",Position=[5 5 0],Size=[10 10],Color=floorColor);
+```
+
+Dinding ruangan dimodelkan sebagai kotak mesh. Mesh statis ditambahkan dengan nilai IsBinaryOccupied sebagai TRUE, sehingga obstacle akan dimasukkan kedalam binary occupancy map yang akan digunakan dalam path planning.
+
+```
+wallHeight = 1;
+wallWidth = 0.25;
+wallLength = 10;
+wallColor = [1 1 0.8157];
+
+% Add outer walls.
+addMesh(scenario,"Box",Position=[wallWidth/2, wallLength/2, wallHeight/2],...
+    Size=[wallWidth, wallLength, wallHeight],Color=wallColor,IsBinaryOccupied=true);
+addMesh(scenario,"Box",Position=[wallLength-wallWidth/2, wallLength/2, wallHeight/2],...
+    Size=[wallWidth, wallLength, wallHeight],Color=wallColor,IsBinaryOccupied=true);
+addMesh(scenario,"Box",Position=[wallLength/2, wallLength-wallWidth/2, wallHeight/2],...
+    Size=[wallLength, wallWidth, wallHeight],Color=wallColor,IsBinaryOccupied=true);
+addMesh(scenario,"Box",Position=[wallLength/2, wallWidth/2, wallHeight/2],...
+    Size=[wallLength, wallWidth, wallHeight],Color=wallColor,IsBinaryOccupied=true);
+
+% Add inner walls.
+addMesh(scenario,"Box",Position=[wallLength/8, wallLength/3, wallHeight/2],...
+    Size=[wallLength/4, wallWidth, wallHeight],Color=wallColor,IsBinaryOccupied=true);
+addMesh(scenario,"Box",Position=[wallLength/4, wallLength/3, wallHeight/2],...
+    Size=[wallWidth, wallLength/6,  wallHeight],Color=wallColor,IsBinaryOccupied=true);
+addMesh(scenario,"Box",Position=[(wallLength-wallLength/4), wallLength/2, wallHeight/2],...
+   Size=[wallLength/2, wallWidth, wallHeight],Color=wallColor,IsBinaryOccupied=true);
+addMesh(scenario,"Box",Position=[wallLength/2, wallLength/2, wallHeight/2],...
+    Size=[wallWidth, wallLength/3, wallHeight],Color=wallColor,IsBinaryOccupied=true);
+```
+
+Visualisasi scenario yang telah dibuat
+
+```
+show3D(scenario);
+lightangle(-45,30);
+view(60,50);
+```
+
+![scenario-map](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/3-1-1.png)
+
+#### Mendapatkan Bentuk Binary Occupancy Map dari Scenario
+
+Mendapatkan bentuk binary occupancy map dengan fungsi binaryOccupancyMap dari scenario untuk path planning. Kemudian memperbesar ruang untuk obstacle (occupied map) pada map sebesar 0.3 m.
+
+```
+map = binaryOccupancyMap(scenario,GridOriginInLocal=[-2 -2],...
+                                           MapSize=[15 15],...
+                                           MapHeightLimits=[0 3]);
+inflate(map,0.3);
+```
+
+Visualisasi 2D occupancy map
+
+```
+show(map)
+```
+
+![binary-map](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/3-1-2.png)
+
+#### Proses Path Planning
+
+Gunakan mobileRobotPRM sebagai path planner untuk mencari jalur bebas obstacle diantara posisi start dan goal pada occupancy map
+
+```
+startPosition = [1 1];
+goalPosition = [8 8];
+```
+
+Atur rng seed
+
+```
+rng(100)
+```
+
+Buat objek mobileRobotPRM dengan memberikan argumen binary occupancy map dan spesifikasikan maksimum node yang akan digunakan. Kemudian berikan jarak maksimum diantara node yang terhubung.
+
+```
+numnodes = 2000;
+planner = mobileRobotPRM(map,numnodes);
+planner.ConnectionDistance = 1;
+```
+
+Cari waypoints pada jalur bebas obstacle
+
+```
+waypoints = findpath(planner,startPosition,goalPosition);
+```
+
+#### Membuat Lintasan
+
+Buat lintasan untuk mobile robot agar dapat mengikuti waypoints yang telah dihasilkan path planning menggunakan sistem waypointTrajectory.
+
+```
+% Robot height from base.
+robotheight = 0.12;
+% Number of waypoints.
+numWaypoints = size(waypoints,1);
+% Robot arrival time at first waypoint.
+firstInTime = 0;
+% Robot arrival time at last waypoint.
+lastInTime = firstInTime + (numWaypoints-1);
+% Generate waypoint trajectory with waypoints from planned path.
+traj = waypointTrajectory(SampleRate=10,...
+                          TimeOfArrival=firstInTime:lastInTime, ...
+                          Waypoints=[waypoints, robotheight*ones(numWaypoints,1)], ...
+                          ReferenceFrame="ENU");
+```
+
+#### Tambahkan Platform Robot pada Scenario
+
+Tambahkan mobile robot Clearpath Husky dari libary robot sebagi objek rigidBodyTree.
+
+```
+huskyRobot = loadrobot("clearpathHusky");
+```
+
+Buat objek robotPlatform dengan model robot yang telah dispesifikasikan pada rigidBodyTree dan jalur yang telah dispesifikasikan pada waypointTrajectory.
+
+```
+platform = robotPlatform("husky",scenario, RigidBodyTree=huskyRobot,...
+                         BaseTrajectory=traj);
+```
+
+Visualisasi scenario dengan robot
+
+```
+[ax,plotFrames] = show3D(scenario);
+lightangle(-45,30)
+view(60,50)
+```
+
+![visualization-robot](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/3-1-3.png)
+
+#### Simulasi Mobile Robot
+
+Visualisasi jalur path planning
+
+```
+hold(ax,"on")
+plot(ax,waypoints(:,1),waypoints(:,2),"-ms",...
+               LineWidth=2,...
+               MarkerSize=4,...
+               MarkerEdgeColor="b",...
+               MarkerFaceColor=[0.5 0.5 0.5]);
+hold(ax,"off")
+```
+
+Setup simulasi yang diinginkan
+
+```
+setup(scenario)
+
+% Control simulation rate at 20 Hz.
+r = rateControl(20);
+
+% Status of robot in simulation.
+robotStartMoving = false;
+
+while advance(scenario)
+    show3D(scenario,Parent=ax,FastUpdate=true);
+    waitfor(r);
+
+    currentPose = read(platform);
+    if ~any(isnan(currentPose))
+        % implies that robot is in the scene and performing simulation.
+        robotStartMoving = true;
+    end
+    if any(isnan(currentPose)) && robotStartMoving
+        % break, once robot reaches goal position.
+        break;
+    end
+end
+```
+
+![simulation-visualization](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/3-1-4.png)
+
+Untuk melakukan simulasi dan visualisasi ulang, reset simulasi scenario
+
+```
+restart(scenario)
+```
+
 ## Pathtracking
 
 
