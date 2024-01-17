@@ -280,3 +280,8 @@ dua contoh diatas menggunakan dataset yang telah disediakan oleh yolo. Untuk men
     ``````bash
     python3 detect.py --weights <path_file.pt> --source 0
     ``````
+
+## Integrasi YOLO dan ROS2
+Amati source code berikut untuk integrasi yolo dan ros2:
+YOLOV5 :
+https://github.com/Ar-Ray-code/YOLOv5-ROS
