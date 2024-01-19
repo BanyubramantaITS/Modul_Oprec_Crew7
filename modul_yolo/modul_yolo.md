@@ -282,6 +282,56 @@ dua contoh diatas menggunakan dataset yang telah disediakan oleh yolo. Untuk men
     ``````
 
 ## Integrasi YOLO dan ROS2
-Amati source code berikut untuk integrasi yolo dan ros2:
-YOLOV5 :
-https://github.com/Ar-Ray-code/YOLOv5-ROS
+Amati source code berikut untuk integrasi yolo dan ros2:\
+YOLOV5 :\
+https://github.com/Ar-Ray-code/YOLOv5-ROS \
+kode utama pada repo terdapat pada path YOLOv5-ROS/yolov5_ros/yolov5_ros/main.py \
+YOLOV8 :
+```python
+import cv2
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import String
+from ultralytics import YOLO 
+
+cap = cv2.VideoCapture(0)
+
+class YoloPublisher(Node):
+
+    def __init__(self):
+        super().__init__('yolo_publisher')
+        self.object_pub = self.create_publisher(String, 'object', 10)
+        timer = 0.1 #sec
+        self.timer = self.create_timer(timer, self.timer__callback)
+        self.model = YOLO("yolov8s.pt")
+
+    def timer__callback(self):
+        succes, frame = cap.read()
+
+        if succes:
+            results = self.model(frame)
+            annotated_frame = results[0].plot()
+
+            msg = String()
+
+            object_list = results.names
+            for object in object_list:
+                if object == 'person':
+                    msg.data = object
+                    self.object_pub.publish(msg)
+
+
+            cv2.imshow("YOLO", annotated_frame)
+            cv2.waitKey(1)
+
+def main(args=None):
+    rclpy.init(args=args)
+    yolo_publisher = YoloPublisher()
+    rclpy.spin(yolo_publisher)
+    yolo_publisher.destroy_node()
+    rclpy.shutdown()
+    
+
+if __name__ == '__main__' :
+    main()
+```
