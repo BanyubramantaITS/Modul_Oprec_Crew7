@@ -25,61 +25,6 @@ mkdir -p ~/ros2_ws/src
 cd ~/ros2_ws
 ```
 
-Selanjutnya kita akan menggunakan contoh yang sudah disediakan ros2 github. Silakan masuk ke src dengan menggunakan command
-```
-cd src
-```
-
-Untuk mendapatkan contoh ros2 yang akan kita gunakan kita perlu mengexsekusi command berikut.
-
-```
-git clone https://github.com/ros2/examples src/examples -b humble
-```
-
-kalian bisa lihat apa saja yang sudah ditambahkan pada directory src dengan menggunakan command
-```
-ls
-```
-Sekarang kita akan kembali ke directori ros2_ws
-```
-cd ..
-```
-. . adalah command untuk keluar 1 directory. Pada step ini anda harusnya berada pada ~/ros2_ws pada terminal anda
-
-Lalu kita akan menggunakan colcon build di terminal
-```
-colcon build
-```
-### run test
-Setelah itu kita bisa mengetest packages yang telah kita build dengan menggunakan command
-```
-colcon test
-```
-lihat apa yang terjadi.
-
-### source environment
-
-Setelah colcon berhasil membangun workspace, hasilnya akan ditempatkan di direktori install. Sebelum Anda dapat menggunakan executable atau pustaka yang diinstal, Anda perlu menambahkannya ke path dan library path Anda. colcon akan menghasilkan file bash/bat di direktori install untuk membantu menyiapkan lingkungan. File-file ini akan menambahkan semua elemen yang diperlukan ke path dan library path Anda, serta menyediakan perintah bash atau shell apa pun yang diekspor oleh packages.
-
-Jalankan command ini dalam terminal yang sama pada path ~/ros2_ws
-```
-source install/setup.bash
-```
-
-### jalankan demo/contoh nya
-
-setelah sourcecing kita bisa menjalankan executables yang ada didalam src nya. Jalankan subscriber node dari demonya
-
-```
-ros2 run examples_rclcpp_minimal_subscriber subscriber_member_function
-```
-
-lalu buka terminal baru dan jalankan publiser node nya juga (jangan lupa harus masuk path dan sourcecing yang sama seperti tutorial source environment)
-
-```
-ros2 run examples_rclcpp_minimal_publisher publisher_member_function
-```
-Lalu lihat apa yang terjadi.
 
 ## Membuat Package
 
