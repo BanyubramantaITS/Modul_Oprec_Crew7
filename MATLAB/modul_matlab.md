@@ -488,5 +488,99 @@ restart(scenario)
 
 ## Pathtracking
 
+Path tracking adalah metode navigasi dalam robot yang menginputkan waypoint-waypoint tujuan dan akan mengoutputkan velocity dan heading terhadap titik waypoint. Algoritma path tracking yang paling umum adalah Pure Pursuit Controller. Algoritma ini menghitung perintah kecepatan sudut yang menggerakkan robot dari posisinya saat ini untuk mencapai beberapa titik di depan robot. Kecepatan linier diasumsikan konstan, sehingga kita dapat mengubah kecepatan linier robot pada titik mana pun. Algoritme kemudian memindahkan titik lihat ke depan pada jalur berdasarkan posisi robot saat ini hingga titik terakhir dari jalur tersebut. Kita dapat menganggap ini sebagai robot yang terus mengejar titik di depannya. Properti LookAheadDistance menentukan seberapa jauh titik lihat-depan ditempatkan.
+
+### Look Ahead Distance Properties
+
+Properti LookAheadDistance adalah properti tuning utama untuk pengontrol. Look ahead distance berarti seberapa jauh robot harus melihat ke depan dari lokasi saat ini untuk menghitung perintah kecepatan sudut. Gambar di bawah ini menunjukkan robot dan titik pandangan ke depan. Seperti yang ditampilkan pada gambar ini, perhatikan bahwa jalur yang sebenarnya tidak sesuai dengan garis lurus di antara titik-titik jalan.
+
+![look-ahead-properties](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/3-2-1.png)
+
+Efek dari mengubah parameter ini dapat mengubah cara robot kita melacak jalur dan ada dua tujuan utama: mendapatkan kembali jalur dan mempertahankan jalur. Untuk mendapatkan kembali jalur di antara titik-titik jalan dengan cepat, LookAheadDistance yang kecil akan menyebabkan robot Anda bergerak dengan cepat menuju jalur tersebut. Namun, seperti yang dapat dilihat pada gambar di bawah ini, robot melampaui jalur dan berosilasi di sepanjang jalur yang diinginkan. Untuk mengurangi osilasi di sepanjang jalur, jarak pandang ke depan yang lebih besar dapat dipilih, namun hal ini dapat menghasilkan lengkungan yang lebih besar di dekat sudut.
+
+![big-and-small-look-ahead](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/3-2-2.png)
+
 
 # Simulink
+
+## Model
+
+Dalam simulasi model ROS2 ini, kita akan menggunakan Simulink untuk mempublikasikan lokasi X dan Y dari sebuah robot. Kita juga akan men-subscribe topic lokasi yang sama dan menampilkan lokasi X,Y yang diterima.
+
+Masukkan perintah berikut untuk membuka model yang telah selesai dibuat pada contoh.
+
+```
+open_system('ros2GetStartedExample');
+```
+
+## Create a Publisher
+
+Konfigurasikan sebuah blok untuk mengirimkan pesan geometry_msgs/Point ke sebuah topik bernama /location.
+
+- Dari Toolstrip MATLAB, pilih Home > New > Simulink Model untuk membuka model Simulink baru.
+
+- Dari Simulink Toolstrip, pilih Simulation > Library Browser untuk membuka Simulink Library Browser. Klik pada tab ROS Toolbox (Anda juga bisa mengetik roslib pada command window MATLAB). Pilih ROS 2 Library.
+
+- Seret blok Publish ke model. Klik dua kali pada blok tersebut untuk mengonfigurasi topik dan tipe pesan.
+
+- Pilih Tentukan sendiri untuk sumber Topik, dan masukkan /location pada Topik.
+
+- Klik Pilih di samping Jenis pesan. Sebuah jendela pop-up akan muncul. Pilih geometry_msgs/Point dan klik OK untuk menutup jendela pop-up.
+
+- Anda juga dapat menentukan ID Domain ROS 2 dengan mengklik opsi Configure ROS 2 Domain ID and ROS Middleware (RMW).
+
+![create-publisher](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/4-1.png)
+
+## Create ROS2 Message
+
+Buat pesan ROS 2 kosong dan isi dengan lokasi x dan y untuk jalur robot. Kemudian publikasikan pesan ROS 2 yang telah diperbarui ke jaringan ROS 2.
+
+Pesan ROS 2 direpresentasikan sebagai sinyal bus di Simulink. Sinyal bus adalah kumpulan sinyal Simulink, dan juga dapat menyertakan sinyal bus lainnya (lihat contoh Jelajahi Kemampuan Bus Simulink (Simulink) untuk mendapatkan gambaran umum). Blok ROS 2 "Blank Message" mengeluarkan sinyal bus Simulink yang sesuai dengan pesan ROS 2.
+
+- Klik tab ROS Toolbox pada Library Browser, atau ketik roslib pada baris perintah MATLAB. Pilih ROS 2 Library.
+
+- Seret blok Blank Message ke model. Klik dua kali pada blok tersebut untuk membuka block mask.
+
+- Klik Select di samping kotak Message type, dan pilih geometry_msgs/Point dari jendela pop-up yang muncul. atur Sample time ke 0.01. Klik OK untuk menutup block mask.
+
+- Dari tab Simulink > Signal Routing pada Library Browser, seret blok Bus Assignment.
+
+- Hubungkan port output dari blok Blank Message ke port input Bus pada blok Bus Assignment. Hubungkan port output dari blok Bus Assignment ke port input blok Publish.
+
+- Klik dua kali pada blok Penugasan Bus. Anda akan melihat x, y, dan z (sinyal-sinyal yang terdiri dari pesan geometry_msgs/Point) yang tercantum di sebelah kiri. Pilih ??? signal1 pada kotak daftar sebelah kanan dan klik Remove. Pilih sinyal X dan Y di kotak daftar sebelah kiri dan klik Select. Klik OK untuk menerapkan perubahan.
+
+NOTE : Jika kalian tidak melihat x, y dan z pada bus, coba tutup blok Bus Assignment dan pada tab Modeling, klik Update Model untuk memastikan informasi bus sudah terintegrasi dengan benar. Jika kalian melihat error, "Selected signal 'singal1' in the Bus Assignment block cannot be found", itu berarti informasi bus masih belum terintegrasi. Coba tutup Diagnostic Viewer, dan ulangi langkah diatas.
+
+Kalian sekarang dapat mengisi sinyal bus dengan lokasi robot.
+
+Dari tab Simulink > Sources pada Library Browser, seret dua blok Gelombang Sinus ke dalam model.
+
+Hubungkan port output dari setiap blok Gelombang Sinus ke port input penugasan x dan y pada blok Penugasan Bus.
+
+Klik dua kali pada blok Gelombang Sinus yang terhubung ke port input X. Atur parameter Fase ke -pi/2 dan klik OK. Biarkan blok Gelombang Sinus yang terhubung ke port input Y sebagai default.
+
+Publisher kalian akan terlihat seperti ini:
+
+![create-msg](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/4-2-1.png)
+
+Pada titik ini, model sudah diatur untuk mempublikasikan pesan ke jaringan ROS 2. kalian dapat memverifikasi ini sebagai berikut:
+
+- Pada tab Simulation, atur waktu penghentian simulasi ke inf.
+
+- Klik Jalankan untuk memulai simulasi. Simulink membuat node ROS 2 khusus untuk model dan penerbit ROS 2 yang sesuai dengan blok Publish.
+
+- Ketika simulasi sedang berjalan, ketik daftar node ros2 pada jendela perintah MATLAB. Daftar ini berisi semua node yang tersedia di jaringan ROS, dan termasuk sebuah node dengan nama seperti /untitled_90580 (nama model beserta nomor acak untuk membuatnya unik).
+
+- Ketika simulasi sedang berjalan, ketik daftar topik ros2 pada jendela perintah MATLAB. Ini akan menampilkan daftar semua topik yang tersedia di jaringan ROS 2, dan termasuk /location.
+
+- Jika Anda menentukan ID domain ROS 2 pada blok Publish, untuk membuat daftar semua topik, ketik ros2 topic list domainID xx, di mana xx adalah ID domain yang Anda tentukan.
+
+![check-topic](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/4-2-2.png)
+
+- Klik Stop untuk menghentikan simulasi. Simulink akan menghapus node dan publisher ROS 2. Secara umum, node ROS 2 untuk model dan publisher serta subscriber yang terkait akan dihapus secara otomatis pada akhir simulasi; tidak diperlukan langkah pembersihan tambahan.
+
+## Create a Subscriber
+
+## Configure and Run the Model
+
+## Modify the Model to React Only to New Messages
