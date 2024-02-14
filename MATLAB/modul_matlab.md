@@ -581,6 +581,74 @@ Pada titik ini, model sudah diatur untuk mempublikasikan pesan ke jaringan ROS 2
 
 ## Create a Subscriber
 
+Gunakan Simulink untuk menerima pesan yang dikirim ke topik /location. Anda akan mengekstrak lokasi x dan y dari pesan dan memplotnya di bidang xy.
+
+- Dari tab ROS Toolbox pada Library Browser, seret blok Subscribe ke model. Klik dua kali pada blok tersebut.
+
+- Pilih Tentukan sendiri di kotak Sumber topik, dan masukkan /lokasi di kotak Topik.
+
+- Klik Pilih di samping kotak Tipe pesan, dan pilih geometry_msgs/Point dari jendela pop-up. atur Waktu sampel ke 0.01. Klik OK untuk menutup block mask.
+
+Blok Subscribe mengeluarkan sinyal bus Simulink, sehingga Anda perlu mengekstrak sinyal x dan y darinya.
+
+- Dari tab Simulink > Signal Routing pada Library Browser, seret blok Bus Selector ke model.
+
+- Hubungkan output Msg dari blok Subscribe ke port input blok Bus Selector.
+
+- Dari tab Modeling, pilih Update Model untuk memastikan bahwa informasi bus disebarkan. Anda mungkin akan mendapatkan kesalahan dan akan diselesaikan pada langkah berikutnya.
+
+- Klik dua kali pada blok Bus Selector. Pilih signal1 dan signal2 pada kotak daftar di sebelah kanan dan klik untuk menghapusnya. Pilih sinyal x dan y di kotak daftar sebelah kiri dan klik untuk memilih sinyal. Klik OK.
+
+Blok Subscribe akan menampilkan pesan yang paling baru diterima untuk topik tersebut pada setiap langkah waktu. Output IsNew menunjukkan apakah pesan telah diterima selama langkah waktu sebelumnya. Untuk tugas saat ini, output IsNew tidak diperlukan, jadi lakukan hal berikut:
+
+- Dari tab Simulink > Sinks pada Library Browser, seret blok Terminator ke model.
+
+- Hubungkan output IsNew dari blok Subscribe ke input blok Terminator.
+
+Langkah selanjutnya adalah mengonfigurasi tampilan sinyal X dan Y yang telah diekstraksi.
+
+- Dari tab Simulink > Sinks pada Library Browser, seret blok Grafik XY ke model. Hubungkan port output dari blok Bus Selector ke port input dari blok XY Graph.
+
+- Dari tab Simulink > Sinks pada Library Browser, seret dua blok Display ke model. Hubungkan setiap output dari blok Bus Selector ke setiap blok Display.
+
+- Simpan model Anda.
+
+Seluruh model Anda akan terlihat seperti ini:
+
+![create-subscriber](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/4-3.png)
+
 ## Configure and Run the Model
 
+- Dari tab Modeling, pilih Model Settings. Pada panel Solver, atur Type ke Fixed-step dan Fixed-step size ke 0.01.
+
+- Atur stop time simulasi ke 10.0.
+
+- Klik Run untuk memulai simulasi. Plot XY akan muncul.
+
+![configure-model](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/4-4.png)
+
+Pertama kali kalian akan menjalankan model di Simulink, plot XY mungkin terlihat lebih bergejolak dibandingkan dengan plot di atas karena penundaan yang disebabkan oleh pemuatan library ROS. Setelah kalian menjalankan ulang simulasi beberapa kali, plot akan terlihat lebih mulus.
+
+Perhatikan bahwa simulasi tidak bekerja dalam waktu yang sebenarnya atau waktu "nyata". Blok-blok dalam model dievaluasi dalam sebuah loop yang hanya mensimulasikan perkembangan waktu, dan tidak dimaksudkan untuk melacak waktu clock yang sebenarnya (untuk detailnya, lihat Simulation Loop Phase (Simulink)).
+
 ## Modify the Model to React Only to New Messages
+
+Pada model di atas, blok Subscribe mengeluarkan pesan (sinyal bus) pada setiap langkah waktu; jika tidak ada pesan yang diterima sama sekali, blok ini mengeluarkan pesan kosong (yaitu pesan dengan nilai nol). Akibatnya, koordinat XY pada awalnya diplot pada (0,0).
+
+Pada bagian ini, kalian akan memodifikasi model untuk menggunakan Enabled Subsystem, sehingga model ini memplot lokasi hanya ketika ada pesan baru yang diterima (untuk informasi lebih lanjut, lihat Menggunakan Enabled Subsystem (Simulink)). Model yang telah dikonfigurasi sebelumnya disertakan untuk kenyamanan Anda.
+
+- Pada model, klik dan seret untuk memilih blok Pemilih Bus dan blok Grafik XY. Klik kanan pada pilihan tersebut dan pilih Create Subsystem from Selection.
+
+- Dari tab Simulink > Ports & Subsystems pada Library Browser, seret blok Aktifkan ke dalam subsistem yang baru dibuat.
+
+- Hubungkan output IsNew dari blok Subscribe ke input yang diaktifkan pada subsistem seperti yang ditunjukkan pada gambar di bawah ini. Hapus blok Terminator. Perhatikan bahwa output IsNew hanya benar jika pesan baru diterima selama langkah waktu sebelumnya.
+
+![modeling-enabled-subsystem](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/4-5-1.png)
+
+- Simpan model Anda.
+
+- -Klik Run untuk memulai simulasi. Anda akan melihat plot XY berikut ini.
+
+![plot-enabled-subsystem](https://github.com/BanyubramantaITS/Modul_Oprec_Crew7/blob/main/MATLAB/images/4-5-2.png)
+
+Blok-blok dalam subsistem yang diaktifkan hanya dieksekusi ketika pesan ROS 2 baru diterima oleh blok Subscribe. Oleh karena itu, nilai awal (0,0) tidak akan ditampilkan dalam plot XY.
