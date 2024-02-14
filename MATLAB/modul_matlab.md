@@ -13,10 +13,6 @@
     + [Pathtracking](#pathtracking)
 
 - [Simulink](#simulink)
-    + [Diagram Blok Dasar](#diagram-blok-dasar)
-    + [ROS2 Toolbox](#ros2-toolbox)
-    + [Matlab Function](matlab-function)
-    + [Pathplanning di Simulink](#pathplanning-di-simulink)
 
 # Instalasi MATLAB R2023b
 
